@@ -1,9 +1,12 @@
 import React from 'react';
+import Slider from './Slider';
+import TabsCategories from './TabsCategories';
 
 const Home = () => {
     return (
         <div>
-            h
+            <Slider />
+            <TabsCategories />
         </div>
     );
 };
