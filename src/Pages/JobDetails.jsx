@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
+import axios from 'axios';
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
     const job = useLoaderData();
@@ -13,17 +15,21 @@ const JobDetails = () => {
         description,
         minimumPrice,
         maximumPrice,
-        buyeremail,
         category,
         deadline,
+        buyer,
         bid_count,
     } = job || {}
 
     const handleFormSubmission = async (e) => {
         e.preventDefault()
+        if (user?.email === buyer.buyeremail)
+            return toast.error('Action not permitted!')
         const form = e.target;
         const jobId = _id;
         const price = parseFloat(form.price.value);
+        if (price < parseFloat(minimumPrice))
+            return toast.error('Offer more or at least equal to Minimum Price.')
         const comment = form.comment.value;
         const deadline = form.deadline.value;
         const email = user?.email;
@@ -37,10 +43,17 @@ const JobDetails = () => {
             jobTitle,
             category,
             email,
-            buyeremail,
+            buyeremail: buyer.buyeremail,
             status,
         }
-        console.log(bidData);
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/bids`, bidData);
+            console.log(data);
+            toast.success('Bid Placed Successfully!')
+
+        } catch (error) {
+            console.error(error)
+        }
 
     }
 
@@ -70,13 +83,13 @@ const JobDetails = () => {
                     </p>
                     <div className='flex items-center gap-5'>
                         <div>
-                            <p className='mt-2 text-sm  text-gray-600 '>Name: Jhankar Vai.</p>
+                            <p className='mt-2 text-sm  text-gray-600 '>Name:{buyer?.name}</p>
                             <p className='mt-2 text-sm  text-gray-600 '>
-                                Email: {buyeremail}
+                                Email: {buyer?.buyeremail}
                             </p>
                         </div>
                         <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
-                            <img src='' alt='' />
+                            <img src={buyer?.photo} alt='' />
                         </div>
                     </div>
                     <p className='mt-6 text-lg font-bold text-gray-600 '>
@@ -117,7 +130,6 @@ const JobDetails = () => {
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
                         </div>
-
                         <div>
                             <label className='text-gray-700 ' htmlFor='comment'>
                                 Comment
@@ -126,12 +138,13 @@ const JobDetails = () => {
                                 id='comment'
                                 name='comment'
                                 type='text'
+                                required
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
                         </div>
                         <div className='flex flex-col gap-2 '>
-                            <label className='text-gray-700'  htmlFor='deadline'>Deadline</label>
-                            <input type="date" id="deadline" name="deadline"/>
+                            <label className='text-gray-700' htmlFor='deadline'>Deadline</label>
+                            <input type="date" id="deadline" name="deadline" />
                         </div>
                     </div>
 

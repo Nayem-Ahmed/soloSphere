@@ -35,7 +35,7 @@ const TabsCategories = () => {
                     <div className='flex items-center justify-center'>
                         <TabList>
                             <Tab>Web Development</Tab>
-                            <Tab>Graphics</Tab>
+                            <Tab>Graphics Design</Tab>
                             <Tab>Digital Marketing</Tab>
                         </TabList>
                     </div>
@@ -43,7 +43,7 @@ const TabsCategories = () => {
                     <TabPanel>
                         <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                             {
-                                jobs.filter(j => j.category === "Development").map(job => (
+                                jobs.filter(j => j.category === "Web Development").map(job => (
                                     <JobCard key={job._id} job={job} />
                                 ))
                             }
@@ -52,7 +52,7 @@ const TabsCategories = () => {
                     <TabPanel>
                         <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                             {
-                                jobs.filter(j => j.category === "Design").map(job => (
+                                jobs.filter(j => j.category === "Graphics Design").map(job => (
                                     <JobCard key={job._id} job={job} />
                                 ))
                             }
@@ -61,7 +61,7 @@ const TabsCategories = () => {
                     <TabPanel>
                         <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                             {
-                                jobs.filter(j => j.category === "Marketing").map(job => (
+                                jobs.filter(j => j.category === "Digital Marketing").map(job => (
                                     <JobCard key={job._id} job={job} />
                                 ))
                             }
