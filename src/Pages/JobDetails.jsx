@@ -30,7 +30,7 @@ const JobDetails = () => {
         const price = parseFloat(form.price.value);
         if (price < parseFloat(minimumPrice))
             return toast.error('Offer more or at least equal to Minimum Price.')
-        const comment = form.comment.value;
+        const description = form.comment.value;
         const deadline = form.deadline.value;
         const email = user?.email;
         const status = 'Pending'
@@ -39,7 +39,7 @@ const JobDetails = () => {
             jobId,
             price,
             deadline,
-            comment,
+            description,
             jobTitle,
             category,
             email,
