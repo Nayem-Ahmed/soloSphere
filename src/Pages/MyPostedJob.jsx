@@ -15,11 +15,12 @@ const MyPostedJobs = () => {
     }, [user?.email]);
     const getData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/jobs/email/${user?.email}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/jobs/email/${user?.email}`, { credentials: 'include' });
             const data = await response.json(); // Convert response to JSON
             setJobs(data); // Set the actual data to the state
         } catch (error) {
             console.error('Error fetching the jobs:', error);
+            toast.error('Error fetching the jobs');
         }
     };
 
@@ -97,7 +98,7 @@ const MyPostedJobs = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 '>
-                                    {jobs.map(job => (
+                                    {jobs?.map(job => (
 
                                         <tr key={job?._id}>
                                             <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>

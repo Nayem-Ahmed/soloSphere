@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import toast from 'react-hot-toast';
+import axios from "axios";
 import signupImg from "../assets/images/register.jpg"
 import logo from "../assets/images/logo.png"
 
@@ -24,8 +25,9 @@ const Register = () => {
             console.log(result);
 
             await updateUserProfile(username, photoUrl)
-            setUser({ ...user, photoURL: photoUrl, displayName: username })
+            setUser({ ...result?.user, photoURL: photoUrl, displayName: username })
             toast.success("Register Successful")
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: result?.user?.email }, { withCredentials: true });
             navigate(location?.state ? location.state : '/');
 
         } catch (error) {
@@ -37,8 +39,9 @@ const Register = () => {
     // google signin
     const handleSigninGoogle = async () => {
         try {
-            await signInWithGoogle();
+            const result = await signInWithGoogle();
             toast.success("Login Successful")
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: result?.user?.email }, { withCredentials: true });
             navigate(location?.state ? location.state : '/');
 
         } catch (error) {
