@@ -36,7 +36,7 @@ const AddJob = () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jobs`, jobsData);
             console.log(data);
-            toast.success('Job Data Updated Successfully!')
+            toast.success('Job added Successfully!')
         } catch (error) {
             console.error(error);
         }
@@ -59,6 +59,7 @@ const AddJob = () => {
                                 id='job_title'
                                 name='job_title'
                                 type='text'
+                                required
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
                         </div>
@@ -88,6 +89,7 @@ const AddJob = () => {
                             <select
                                 name='category'
                                 id='category'
+                                required
                                 className='border p-2 rounded-md'
                             >
                                 <option value='Web Development'>Web Development</option>
@@ -103,6 +105,7 @@ const AddJob = () => {
                                 id='min_price'
                                 name='min_price'
                                 type='number'
+                                required
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
                         </div>
@@ -115,6 +118,7 @@ const AddJob = () => {
                                 id='max_price'
                                 name='max_price'
                                 type='number'
+                                required
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
                         </div>
@@ -126,6 +130,7 @@ const AddJob = () => {
                         <textarea
                             className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             name='description'
+                            required
                             id='description'
                         ></textarea>
                     </div>

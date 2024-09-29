@@ -1,12 +1,14 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import toast from 'react-hot-toast';
 import signupImg from "../assets/images/register.jpg"
 import logo from "../assets/images/logo.png"
 
 const Register = () => {
-    const {user, createUser, signInWithGoogle, updateUserProfile, setUser } = useContext(AuthContext);
+    const { user, createUser, signInWithGoogle, updateUserProfile, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // Email password signin
     const handleSignIn = async (e) => {
@@ -22,15 +24,14 @@ const Register = () => {
             console.log(result);
 
             await updateUserProfile(username, photoUrl)
-            setUser({ ...user, photoURL: photoUrl, displayName: username})
+            setUser({ ...user, photoURL: photoUrl, displayName: username })
             toast.success("Register Successful")
+            navigate(location?.state ? location.state : '/');
 
         } catch (error) {
             console.error(error)
 
         }
-
-
 
     }
     // google signin
@@ -38,6 +39,7 @@ const Register = () => {
         try {
             await signInWithGoogle();
             toast.success("Login Successful")
+            navigate(location?.state ? location.state : '/');
 
         } catch (error) {
             console.error(error)

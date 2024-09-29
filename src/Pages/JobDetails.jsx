@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import axios from 'axios';
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 const JobDetails = () => {
     const job = useLoaderData();
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
 
     const {
@@ -43,13 +44,14 @@ const JobDetails = () => {
             jobTitle,
             category,
             email,
-            buyeremail: buyer.buyeremail,
+            buyer,
             status,
         }
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/bids`, bidData);
             console.log(data);
             toast.success('Bid Placed Successfully!')
+            navigate('/my_bids')
 
         } catch (error) {
             console.error(error)

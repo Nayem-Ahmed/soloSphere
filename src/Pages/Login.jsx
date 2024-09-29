@@ -1,12 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../assets/images/login.jpg"
 import loginlogo from "../assets/images/logo.png"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Providers/AuthProvider";
 import toast from 'react-hot-toast';
 
 const Login = () => {
-    const { signIn, signInWithGoogle } = useContext(AuthContext);
+    const { user, loading, signIn, signInWithGoogle } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Redirect to home page if the user is already logged in
+    useEffect(() => {
+        if (!loading && user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
     // Email password signin
     const handleSignIn = async (e) => {
         e.preventDefault();
@@ -16,13 +25,12 @@ const Login = () => {
         try {
             await signIn(email, password)
             toast.success("Login Successful")
+            navigate(location?.state ? location.state : '/');
 
         } catch (error) {
             toast.error(error.message)
 
         }
-
-
 
     }
     // google signin
@@ -30,6 +38,7 @@ const Login = () => {
         try {
             await signInWithGoogle();
             toast.success("Login Successful")
+            navigate(location?.state ? location.state : '/');
 
         } catch (error) {
             console.error(error)
@@ -37,6 +46,10 @@ const Login = () => {
 
         }
 
+    }
+    // Show a loading spinner or blank screen while authentication state is loading
+    if (loading) {
+        return <div className="text-center">Loading...</div>; // You can replace this with a spinner
     }
     return (
         <div>

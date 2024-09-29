@@ -22,6 +22,7 @@ const JobUpdate = () => {
         e.preventDefault()
 
         const form = e.target;
+        const jobTitle = form.job_title.value;
         const minimumPrice = parseFloat(form.min_price.value);
         const maximumPrice = parseFloat(form.max_price.value);
         const category = form.category.value

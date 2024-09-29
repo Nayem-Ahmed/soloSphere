@@ -51,10 +51,10 @@ const Navbar = () => {
                             <Link to={'my_postedJob'}>My Posted Jobs</Link>
                         </li>
                         <li>
-                            <div>My Bids</div>
+                            <Link to={`/my_bids`}>My Bids</Link>
                         </li>
                         <li>
-                            <div>Bid Requests</div>
+                            <Link to={'/bid_requests'}>Bid Requests</Link>
                         </li>
                         <li className='mt-2'>
                             <button onClick={logOut} className='bg-gray-200 block text-center'>Logout</button>
