@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
 import logo from "../assets/images/logo.png"
-import { AuthContext } from "../Providers/AuthProvider";
+import useAuth from "../Hooks/useAuth";
 
 const Navbar = () => {
-    const {logOut, user } = useContext(AuthContext);
-    
+    const { user, logOut } = useAuth();
+
     return (
         <div className='navbar bg-base-100 shadow-sm container px-4 mx-auto'>
             <div className='flex-1'>
@@ -18,7 +17,7 @@ const Navbar = () => {
             <div className='flex-none'>
                 <ul className='menu menu-horizontal px-1'>
                     <li>
-                    <Link to={`/`}>Home</Link>
+                        <Link to={`/`}>Home</Link>
                     </li>
 
                     {!user && (<li>

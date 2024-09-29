@@ -18,7 +18,7 @@ import SliderContent from '../../Components/SliderContent';
 
 const Slider = () => {
     return (
-        <div>
+        <div className='container px-4 mx-auto '>
             <>
                 <Swiper
                     spaceBetween={30}
