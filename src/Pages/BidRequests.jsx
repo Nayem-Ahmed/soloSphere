@@ -1,39 +1,85 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../Providers/AuthProvider';
-import axios from 'axios';
+import useAxiosSecure from '../Hooks/useAxiosSecure'
+import useAuth from '../Hooks/useAuth';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 const BidRequests = () => {
-    const { user } = useContext(AuthContext);
-    const [bidsrequests, setBidsrequests] = useState([]);
+    const queryClient = useQueryClient(); // Ensure you use this hook to get the query client instance
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure()
+    // const [bidsrequests, setBidsrequests] = useState([]);
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/bids-requests/${user?.email}`);
-                const data = await response.json(); // Convert response to JSON
-                setBidsrequests(data); // Set the actual data to the state
-            } catch (error) {
-                console.error('Error fetching the jobs:', error);
-            }
-        };
+    const { isPending, error, refetch, data: bidsrequests } = useQuery({
+        queryKey: ['bids', user?.email],
+        queryFn: () => getData()
+    })
 
-        getData();
-    }, [user?.email]);
+    const getData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/bids-requests/${user?.email}`);
+            const data = await response.json(); // Convert response to JSON
+            return data;
+        } catch (error) {
+            console.error('Error fetching the jobs:', error);
+        }
+    };
+
+
+    const { mutateAsync } = useMutation({
+        mutationFn: async ({ id, status }) => {
+            const { data } = await axiosSecure.patch(`/bids/${id}`, { status });
+            console.log(data);
+            return data;
+        },
+        onSuccess: () => {
+            console.log('Wow, data updated');
+            toast.success('Updated');
+            // refetch();
+            // kothin
+            queryClient.invalidateQueries({ queryKey: ['bids'] }); // Refetch data
+        },
+    });
+
+    // handleStatus
+    const handlestatus = async (id, prevStatus, status) => {
+        console.log(id, prevStatus, status);
+        if (prevStatus === status) return console.log('Sry vai.. hobena');
+        await mutateAsync({ id, status });
+    };
+
+
+
+
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         try {
+    //             const response = await fetch(`${import.meta.env.VITE_API_URL}/bids-requests/${user?.email}`);
+    //             const data = await response.json(); // Convert response to JSON
+    //             setBidsrequests(data); // Set the actual data to the state
+    //         } catch (error) {
+    //             console.error('Error fetching the jobs:', error);
+    //         }
+    //     };
+
+    //     getData();
+    // }, [user?.email]);
+
 
     // handlestatus
-    const handlestatus = async (id, prevStatus, status) => {
-        if (prevStatus === status) return console.log('Sry vai.. hobena')
-        try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/bids/${id}`, { status });
-            console.log(data);
+    // const handlestatus = async (id, prevStatus, status) => {
+    //     if (prevStatus === status) return console.log('Sry vai.. hobena')
+    //     try {
+    //         const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/bids/${id}`, { status });
+    //         console.log(data);
 
-        } catch (error) {
-            console.log(error);
+    //     } catch (error) {
+    //         console.log(error);
 
 
-        }
+    //     }
 
-    }
+    // }
+
 
     return (
         <section className='container px-4 mx-auto pt-12'>
@@ -138,7 +184,7 @@ const BidRequests = () => {
                                             </td>
                                             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                                                 <div className='flex items-center gap-x-6'>
-                                                     {/* Accept Button: In Progress */}
+                                                    {/* Accept Button: In Progress */}
                                                     <button onClick={() => handlestatus(bidrequ?._id, bidrequ?.status, 'In Progress')} disabled={bidrequ?.status === 'Complete'} className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
                                                         <svg
                                                             xmlns='http://www.w3.org/2000/svg'

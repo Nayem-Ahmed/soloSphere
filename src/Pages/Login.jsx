@@ -52,10 +52,7 @@ const Login = () => {
         }
 
     }
-    // Show a loading spinner or blank screen while authentication state is loading
-    if (loading) {
-        return <div className="text-center">Loading...</div>; // You can replace this with a spinner
-    }
+ 
     return (
         <div>
             <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">

@@ -19,6 +19,9 @@ const Navbar = () => {
                     <li>
                         <Link to={`/`}>Home</Link>
                     </li>
+                    <li>
+                        <Link to={`/all-jobs`}>All Joobs</Link>
+                    </li>
 
                     {!user && (<li>
                         <Link to={`/login`}>Login</Link>

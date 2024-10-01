@@ -54,7 +54,9 @@ const JobDetails = () => {
             navigate('/my_bids')
 
         } catch (error) {
-            console.error(error)
+            console.error(error.response.data.message)
+            toast.error(error.response.data.message)
+            form.reset()
         }
 
     }
