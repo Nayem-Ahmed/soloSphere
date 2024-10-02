@@ -37,6 +37,7 @@ const AddJob = () => {
             const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jobs`, jobsData);
             console.log(data);
             toast.success('Job added Successfully!')
+            form.reset();
         } catch (error) {
             console.error(error);
         }

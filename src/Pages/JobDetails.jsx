@@ -148,7 +148,7 @@ const JobDetails = () => {
                         </div>
                         <div className='flex flex-col gap-2 '>
                             <label className='text-gray-700' htmlFor='deadline'>Deadline</label>
-                            <input type="date" id="deadline" name="deadline" />
+                            <input required type="date" id="deadline" name="deadline" />
                         </div>
                     </div>
 

@@ -67,9 +67,7 @@ const TabsCategories = () => {
                             }
                         </div>
                     </TabPanel>
-                    <TabPanel>
-                        <h2>Any content 2</h2>
-                    </TabPanel>
+
                 </div>
             </Tabs>
         </div>
